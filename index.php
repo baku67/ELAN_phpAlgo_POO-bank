@@ -23,7 +23,6 @@
     $acc1 = new Account("Livret A", 4200.5, "EUR", $owner1);
     $acc2 = new Account("Compte épargne", 154, "DENIER", $owner1);
 
-    // $owner1->setAccountList([$acc1, $acc2]);
 
     echo "************ Infos bancaires *************";
     echo $owner1;

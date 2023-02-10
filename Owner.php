@@ -112,6 +112,14 @@
             $this->_accountList[] = $account;
         }
 
+        public function getAge() {
+            $todayDate = new DateTime();
+            $age = $this->getBirthDate()->diff($todayDate);
+
+            // return $age->format('%Y ans %m mois et %d jours');
+            return $age->format('%Y');
+        }
+
         public function printAccountListLabel()
         {
                 $accountList = $this->getAccountList();
@@ -126,6 +134,6 @@
         }
 
         public function __toString() {
-            return "<br><span style='text-decoration:underline;'><br>Infos Owner:</span><br>Prénom: " . $this->getFirstName() . "<br>Nom: " . $this->getLastName() . "<br>Date de naissance: " . $this->getBirthDate()->format("Y m d") . "<br>Ville: " . $this->getCity() . "<br>Liste de comptes: " . implode(", ", $this->printAccountListLabel());
+            return "<br><span style='text-decoration:underline;'><br>Infos Owner:</span><br>Prénom: " . $this->getFirstName() . "<br>Nom: " . $this->getLastName() . "<br>Date de naissance: " . $this->getBirthDate()->format("d-m-Y") . " (" . $this->getAge() . " ans)<br>Ville: " . $this->getCity() . "<br>Liste de comptes: " . implode(", ", $this->printAccountListLabel());
         }
     }
