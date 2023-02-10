@@ -14,6 +14,7 @@
             $this->_initialBalance = $initialBalance;
             $this->_currency = $currency;
             $this->_owner = $owner;
+            $this->_owner->addAccount($this);
         }
 
         // Accesseurs
@@ -46,8 +47,20 @@
         }
 
         // Méthodes
+
+        public function addCredit(int $amount) {
+
+        }
+        public function withdraw(int $amount) {
+
+        }
+
+        public function printOwnerFullname(): string {
+            return $this->_owner->getFirstName() . " " . $this->_owner->getLastName();
+        }
+
         public function __toString() {
-            return "<span style='text-decoration:underline;'>Infos Account:</span><br>Intitulé: " . $this->getLabel() . "<br>Solde initial: " . $this->getInitialBalance() . "<br>Devise: " . $this->getCurrency() . "<br>Titulaire: " . $this->getOwner();
+            return "<span style='text-decoration:underline;'>Infos Account:</span><br>Intitulé: " . $this->getLabel() . "<br>Solde initial: " . $this->getInitialBalance() . "<br>Devise: " . $this->getCurrency() . "<br>Titulaire: " . $this->printOwnerFullname();
         }
 
     }

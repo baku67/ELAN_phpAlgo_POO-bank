@@ -10,12 +10,12 @@
         private array $_accountList;
 
         // Constructeur
-        public function __construct(string $firstName, string $lastName, string $birthDate, string $city, array $accountList) {
+        public function __construct(string $firstName, string $lastName, string $birthDate, string $city) {
             $this->_firstName = $firstName;
             $this->_lastName = $lastName;
             $this->_birthDate = new DateTime ($birthDate);
             $this->_city = $city;
-            $this->_accountList = $accountList;
+            $this->_accountList = [];
         }
 
         // Accesseurs
@@ -87,19 +87,7 @@
                 return $this;
         }
 
-        /**
-         * Get the value of _accountList
-         */
-        public function getAccountList(): array
-        {
-                return $this->_accountList;
-        }
-        public function getAccountListLabel(): array
-        {
-                // return $this->_accountList->{'_label'};
-                return $accountLabels = array_column($this->_accountList, '_label');
-        }
-
+        
         /**
          * Set the value of _accountList
          */
@@ -109,8 +97,35 @@
                 return $this;
         }
 
+        /**
+         * Get the value of _accountList
+         */
+        public function getAccountList(): array
+        {
+                return $this->_accountList;
+        }
+
+
         // Méthodes
+        // Méthode appelée dans le constructeur du Account (à chaque création de compte, le compte est ajouté à la liste des comptes de l'Owner)
+        public function addAccount($account) {
+            $this->_accountList[] = $account;
+        }
+
+        public function printAccountListLabel()
+        {
+                $accountList = $this->getAccountList();
+                $accountLabelList;
+                // var_dump($accountList);die;
+                foreach($accountList as $account) {
+                    // echo $account-> getLabel().",  ";
+                    $accountLabelList[] = $account->getLabel();
+                }
+
+                return $accountLabelList;
+        }
+
         public function __toString() {
-            return "<br><span style='text-decoration:underline;'><br>Infos Owner:</span><br>Prénom: " . $this->getFirstName() . "<br>Nom: " . $this->getLastName() . "<br>Date de naissance: " . $this->getBirthDate()->format("Y m d") . "<br>Ville: " . $this->getCity() . "<br>Liste de comptes: " . var_dump($this->getAccountList()) . "<br>";
+            return "<br><span style='text-decoration:underline;'><br>Infos Owner:</span><br>Prénom: " . $this->getFirstName() . "<br>Nom: " . $this->getLastName() . "<br>Date de naissance: " . $this->getBirthDate()->format("Y m d") . "<br>Ville: " . $this->getCity() . "<br>Liste de comptes: " . implode(", ", $this->printAccountListLabel());
         }
     }
