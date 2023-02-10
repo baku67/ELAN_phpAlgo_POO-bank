@@ -46,15 +46,26 @@
         }
 
         // Méthodes
-        public function addCredit(float $amount) {
+        public function addCredit(float $amount, string $action) {
             $newBalance = $this->_balance += $amount;
-            echo $amount . " " . $this->getCurrency() . " ont été crédité sur le compte \"" . $this->getLabel() ."\". Nouveau solde: " . $this->getBalance() . " " . $this->getCurrency();
+            if ($action == "simple") {
+                echo "<span style='color:grey; font-size:80%;'>" . date("Y-m-d H:i:s") . ":</span> <span class='credit'>" . $amount . "</span> " . $this->getCurrency() . " ont été crédité sur le compte \"" . $this->getLabel() ."\". Nouveau solde: <span class='solde'>" . $this->getBalance() . "</span> " . $this->getCurrency() . ".<br>";
+            }
             return $this->setBalance($newBalance);
         }
-        public function withdraw(float $amount) {
+        public function withdraw(float $amount, string $action) {
             $newBalance = $this->_balance -= $amount;
-            echo $amount . " " . $this->getCurrency() . " ont été débité sur le compte \"" . $this->getLabel() ."\". Nouveau solde: " . $this->getBalance() . " " . $this->getCurrency();
+            if ($action == "simple") {
+                echo "<span style='color:grey; font-size:80%;'>" . date("Y-m-d H:i:s") . ":</span> <span class='debit'>" . $amount . "</span> " . $this->getCurrency() . " ont été débité sur le compte \"" . $this->getLabel() ."\". Nouveau solde: <span class='solde'>" . $this->getBalance() . "</span> " . $this->getCurrency() . ".<br>";
+            }
             return $this->setBalance($newBalance);
+        }
+
+        public function moneyTransfer($amount, $receptAccount) {
+            $this->withdraw($amount, "transfer");
+            $receptAccount->addCredit($amount, "transfer");
+            echo "<span style='color:grey; font-size:80%;'>" . date("Y-m-d H:i:s") . ":</span> <span class='debit'>" . $amount . "</span> " . $this->getCurrency() . " ont été transféré du compte \"" . $this->getLabel() . "\" au compte \"" . $receptAccount->getLabel() . "\".<br>";
+            echo "Nouveau solde \"" . $this->getLabel() . "\": <span class='solde'>" . $this->getBalance() . "</span>,<br>Nouveau solde \"" . $receptAccount->getLabel() . "\": <span class='solde'>" . $receptAccount->getBalance() . "</span>.";
         }
 
         public function printOwnerFullname(): string {
@@ -62,7 +73,7 @@
         }
 
         public function __toString() {
-            return "<span style='text-decoration:underline;'>Infos Account:</span><br>Intitulé: " . $this->getLabel() . "<br>Solde initial: " . $this->getBalance() . "<br>Devise: " . $this->getCurrency() . "<br>Titulaire: " . $this->printOwnerFullname();
+            return "<span style='text-decoration:underline;'>Infos Account:</span><br>Intitulé: " . $this->getLabel() . "<br>Solde initial: <span class='solde'>" . $this->getBalance() . "</span><br>Devise: " . $this->getCurrency() . "<br>Titulaire: " . $this->printOwnerFullname();
         }
 
     }
